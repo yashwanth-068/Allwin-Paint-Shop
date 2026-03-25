@@ -15,9 +15,9 @@
 
 1. Open **MongoDB Compass**.
 2. In MongoDB Atlas: **Database** → **Connect** → **Connect using MongoDB Compass**.
-3. Copy the connection string (e.g. `mongodb+srv://user:password@cluster.xxxxx.mongodb.net`).
+3. Copy the connection string shown in Atlas (keep it private).
 4. Paste it in Compass and click **Connect**.
-5. Replace `<password>` in the string with your real database password.
+5. Replace the `<password>` placeholder in Atlas with your real database password.
 
 ---
 
@@ -93,5 +93,5 @@ After that, in Compass you’ll see `allwin_paint_shop` and these collections.
 
 - **Using Atlas**
   - In Atlas: **Network Access** → add your IP (or `0.0.0.0/0` for testing).
-  - In `backend\.env` use the full Atlas URI, e.g.  
-    `MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/allwin_paint_shop`
+  - In `backend\.env` use your Atlas URI, for example:  
+    `MONGODB_URI=YOUR_ATLAS_URI_HERE`
