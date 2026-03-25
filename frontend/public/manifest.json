@@ -1,0 +1,9 @@
+{
+  "short_name": "All Win",
+  "name": "All Win Paint Shop",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1e40af",
+  "background_color": "#ffffff"
+}
