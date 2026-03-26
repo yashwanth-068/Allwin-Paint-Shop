@@ -17,9 +17,13 @@ exports.getOwnerDashboard = async (req, res) => {
     const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const thisYear = new Date(today.getFullYear(), 0, 1);
 
-    // Today's stats
+    // Today's stats (sales + paid orders)
     const todaySales = await Sale.aggregate([
       { $match: { createdAt: { $gte: today, $lt: tomorrow } } },
+      { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
+    ]);
+    const todayOrderSales = await Order.aggregate([
+      { $match: { paymentStatus: 'paid', createdAt: { $gte: today, $lt: tomorrow } } },
       { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
     ]);
 
@@ -27,9 +31,13 @@ exports.getOwnerDashboard = async (req, res) => {
       createdAt: { $gte: today, $lt: tomorrow }
     });
 
-    // Monthly stats
+    // Monthly stats (sales + paid orders)
     const monthlySales = await Sale.aggregate([
       { $match: { createdAt: { $gte: thisMonth } } },
+      { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
+    ]);
+    const monthlyOrderSales = await Order.aggregate([
+      { $match: { paymentStatus: 'paid', createdAt: { $gte: thisMonth } } },
       { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
     ]);
 
@@ -37,9 +45,13 @@ exports.getOwnerDashboard = async (req, res) => {
       createdAt: { $gte: thisMonth }
     });
 
-    // Yearly stats
+    // Yearly stats (sales + paid orders)
     const yearlySales = await Sale.aggregate([
       { $match: { createdAt: { $gte: thisYear } } },
+      { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
+    ]);
+    const yearlyOrderSales = await Order.aggregate([
+      { $match: { paymentStatus: 'paid', createdAt: { $gte: thisYear } } },
       { $group: { _id: null, total: { $sum: '$totalAmount' }, count: { $sum: 1 } } }
     ]);
 
@@ -67,21 +79,64 @@ exports.getOwnerDashboard = async (req, res) => {
       { $group: { _id: null, total: { $sum: '$creditAmount' } } }
     ]);
 
-    // Monthly sales chart data (last 12 months)
-    const monthlyChartData = await Sale.aggregate([
-      {
-        $match: {
-          createdAt: { $gte: new Date(today.getFullYear() - 1, today.getMonth(), 1) }
-        }
-      },
+    // Sales trend (paid orders)
+    const range = req.query.range || 'last_12_months';
+    let trendStart = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+    let trendEnd = null;
+    let trendFormat = '%Y-%m';
+
+    if (range === 'last_7_days') {
+      trendStart = new Date(today);
+      trendStart.setDate(trendStart.getDate() - 6);
+      trendFormat = '%Y-%m-%d';
+    } else if (range === 'last_30_days') {
+      trendStart = new Date(today);
+      trendStart.setDate(trendStart.getDate() - 29);
+      trendFormat = '%Y-%m-%d';
+    } else if (range === 'previous_month') {
+      trendStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      trendEnd = new Date(today.getFullYear(), today.getMonth(), 1);
+      trendFormat = '%Y-%m-%d';
+    }
+
+    const trendMatch = {
+      paymentStatus: 'paid',
+      createdAt: trendEnd ? { $gte: trendStart, $lt: trendEnd } : { $gte: trendStart }
+    };
+
+    const salesTrend = await Order.aggregate([
+      { $match: trendMatch },
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
-          sales: { $sum: '$totalAmount' },
+          _id: { $dateToString: { format: trendFormat, date: '$createdAt' } },
+          total: { $sum: '$totalAmount' },
           count: { $sum: 1 }
         }
       },
       { $sort: { _id: 1 } }
+    ]);
+
+    // Sales by category (based on paid orders)
+    const categorySales = await Order.aggregate([
+      { $match: { paymentStatus: 'paid' } },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'items.product',
+          foreignField: '_id',
+          as: 'product'
+        }
+      },
+      { $unwind: '$product' },
+      {
+        $group: {
+          _id: '$product.category',
+          total: { $sum: '$items.total' },
+          quantity: { $sum: '$items.quantity' }
+        }
+      },
+      { $sort: { total: -1 } }
     ]);
 
     // Top selling products
@@ -117,18 +172,18 @@ exports.getOwnerDashboard = async (req, res) => {
       success: true,
       data: {
         today: {
-          sales: todaySales[0]?.total || 0,
-          salesCount: todaySales[0]?.count || 0,
+          sales: (todaySales[0]?.total || 0) + (todayOrderSales[0]?.total || 0),
+          salesCount: (todaySales[0]?.count || 0) + (todayOrderSales[0]?.count || 0),
           orders: todayOrders
         },
         monthly: {
-          sales: monthlySales[0]?.total || 0,
-          salesCount: monthlySales[0]?.count || 0,
+          sales: (monthlySales[0]?.total || 0) + (monthlyOrderSales[0]?.total || 0),
+          salesCount: (monthlySales[0]?.count || 0) + (monthlyOrderSales[0]?.count || 0),
           orders: monthlyOrders
         },
         yearly: {
-          sales: yearlySales[0]?.total || 0,
-          salesCount: yearlySales[0]?.count || 0
+          sales: (yearlySales[0]?.total || 0) + (yearlyOrderSales[0]?.total || 0),
+          salesCount: (yearlySales[0]?.count || 0) + (yearlyOrderSales[0]?.count || 0)
         },
         products: {
           total: totalProducts,
@@ -145,7 +200,8 @@ exports.getOwnerDashboard = async (req, res) => {
           total: creditSales[0]?.total || 0
         },
         charts: {
-          monthlySales: monthlyChartData
+          salesTrend,
+          categorySales
         },
         topProducts,
         recentOrders,

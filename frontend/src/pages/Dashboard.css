@@ -124,10 +124,26 @@
   box-shadow: var(--shadow);
 }
 
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .chart-title {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+.chart-header .chart-title {
+  margin-bottom: 0;
+}
+
+.chart-select {
+  min-width: 170px;
 }
 
 .chart-container {

@@ -18,7 +18,7 @@ import {
 } from 'chart.js';
 import Sidebar from '../components/Sidebar';
 import api from '../utils/api';
-import { formatCurrency, formatDate } from '../utils/helpers';
+import { formatCurrency, formatDate, getCategoryName } from '../utils/helpers';
 import {
   BillingModulePage,
   InventoryModulePage,
@@ -39,14 +39,15 @@ ChartJS.register(
 const OwnerDashboardHome = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [chartRange, setChartRange] = useState('last_12_months');
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [chartRange]);
 
   const fetchDashboardData = async () => {
     try {
-      const response = await api.get('/dashboard/owner');
+      const response = await api.get(`/dashboard/owner?range=${chartRange}`);
       setDashboardData(response.data.data);
     } catch (error) {
       console.error('Error fetching dashboard:', error);
@@ -63,11 +64,27 @@ const OwnerDashboardHome = () => {
     );
   }
 
+  const chartRanges = [
+    { value: 'last_7_days', label: 'Last 7 Days' },
+    { value: 'last_30_days', label: 'Last 30 Days' },
+    { value: 'previous_month', label: 'Previous Month' },
+    { value: 'last_12_months', label: 'Last 12 Months' }
+  ];
+
+  const trendRows = dashboardData?.charts?.salesTrend || [];
+  const formatTrendLabel = (value) => {
+    if (!value) return '';
+    if (chartRange === 'last_12_months') return value;
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return value;
+    return new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short' }).format(parsed);
+  };
+
   const salesChartData = {
-    labels: dashboardData?.charts?.monthlySales?.map(d => d._id) || [],
+    labels: trendRows.length ? trendRows.map((d) => formatTrendLabel(d._id)) : ['No sales yet'],
     datasets: [{
-      label: 'Monthly Sales',
-      data: dashboardData?.charts?.monthlySales?.map(d => d.sales) || [],
+      label: 'Sales',
+      data: trendRows.length ? trendRows.map((d) => d.total) : [0],
       borderColor: '#1e40af',
       backgroundColor: 'rgba(30, 64, 175, 0.1)',
       fill: true,
@@ -75,11 +92,18 @@ const OwnerDashboardHome = () => {
     }]
   };
 
+  const categoryRows = dashboardData?.charts?.categorySales || [];
+  const categoryPalette = ['#1e40af', '#f97316', '#22c55e', '#8b5cf6', '#6b7280', '#0ea5e9'];
+  const categoryLabels = categoryRows.length
+    ? categoryRows.map((row) => getCategoryName(row._id))
+    : ['No sales yet'];
+  const categoryValues = categoryRows.length ? categoryRows.map((row) => row.total) : [1];
+
   const categoryData = {
-    labels: ['Paints', 'Cement', 'Steel', 'Tools', 'Others'],
+    labels: categoryLabels,
     datasets: [{
-      data: [35, 25, 20, 12, 8],
-      backgroundColor: ['#1e40af', '#f97316', '#22c55e', '#8b5cf6', '#6b7280']
+      data: categoryValues,
+      backgroundColor: categoryRows.length ? categoryPalette.slice(0, categoryLabels.length) : ['#6b7280']
     }]
   };
 
@@ -170,7 +194,22 @@ const OwnerDashboardHome = () => {
       {/* Charts */}
       <div className="charts-grid">
         <div className="chart-card">
-          <h3 className="chart-title">Sales Trend (Last 12 Months)</h3>
+          <div className="chart-header">
+            <h3 className="chart-title">
+              Sales Trend ({chartRanges.find((range) => range.value === chartRange)?.label})
+            </h3>
+            <select
+              className="form-select chart-select"
+              value={chartRange}
+              onChange={(event) => setChartRange(event.target.value)}
+            >
+              {chartRanges.map((range) => (
+                <option key={range.value} value={range.value}>
+                  {range.label}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="chart-container">
             <Line 
               data={salesChartData} 
