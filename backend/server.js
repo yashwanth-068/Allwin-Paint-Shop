@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 const connectDB = require('./config/db');
 
 // Load env vars
@@ -57,20 +58,25 @@ app.get('/api/health', (req, res) => {
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
   const clientBuildPath = path.join(__dirname, '..', 'frontend', 'build');
+  const indexHtml = path.join(clientBuildPath, 'index.html');
 
-  app.use(express.static(clientBuildPath, {
-    maxAge: '1y',
-    etag: false,
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('index.html')) {
-        res.setHeader('Cache-Control', 'no-cache');
+  if (fs.existsSync(indexHtml)) {
+    app.use(express.static(clientBuildPath, {
+      maxAge: '1y',
+      etag: false,
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('index.html')) {
+          res.setHeader('Cache-Control', 'no-cache');
+        }
       }
-    }
-  }));
+    }));
 
-  app.get(/^\/(?!api).*/, (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
-  });
+    app.get(/^\/(?!api).*/, (req, res) => {
+      res.sendFile(indexHtml);
+    });
+  } else {
+    console.warn('Frontend build not found. Skipping static file serving.');
+  }
 }
 
 // Error handler
