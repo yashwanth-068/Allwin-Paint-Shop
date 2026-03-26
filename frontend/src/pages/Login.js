@@ -117,32 +117,8 @@ const Login = () => {
               <Link to="/register" className="auth-link">Sign up</Link>
             </p>
           </div>
-
-          <div className="auth-demo">
-            <p className="auth-demo-title">Demo Accounts:</p>
-            <div className="auth-demo-accounts">
-              <button 
-                type="button"
-                className="auth-demo-btn"
-                onClick={() => setFormData({ email: 'owner@allwin.com', password: 'password123' })}
-              >
-                Owner
-              </button>
-              <button 
-                type="button"
-                className="auth-demo-btn"
-                onClick={() => setFormData({ email: 'manager@allwin.com', password: 'password123' })}
-              >
-                Manager
-              </button>
-              <button 
-                type="button"
-                className="auth-demo-btn"
-                onClick={() => setFormData({ email: 'buyer@allwin.com', password: 'password123' })}
-              >
-                Buyer
-              </button>
-            </div>
+          <div className="auth-note">
+            Owner/Manager accounts are created by the shop admin. Contact us to request access.
           </div>
         </div>
 

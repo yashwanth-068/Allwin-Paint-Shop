@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiMinus, FiPlus, FiShoppingBag } from 'react-icons/fi';
+import { FiArrowLeft, FiMinus, FiPlus, FiShoppingBag, FiShield } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/CartContext';
 import api from '../utils/api';
@@ -141,6 +141,29 @@ const ProductDetails = () => {
 
   return (
     <div className="product-detail-page">
+      {/* Injected styles for UI perfection. Ideally, move to ProductDetails.css */}
+      <style>{`
+        .product-main-image {
+          position: relative;
+          overflow: hidden; /* To keep rounded corners on children */
+        }
+        .product-logo-watermark {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(5px);
+          padding: 0.5rem 0.85rem;
+          border-radius: 999px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: #334155;
+          pointer-events: none; /* So it doesn't interfere with the button */
+        }
+      `}</style>
       <section className="product-detail-hero">
         <div className="container">
           <Link to="/products" className="product-detail-back">
@@ -161,6 +184,10 @@ const ProductDetails = () => {
                     onError={handleImageError}
                   />
                 </button>
+                <div className="product-logo-watermark">
+                  <FiShield />
+                  <span>All Win Assured</span>
+                </div>
               </div>
               {productImages.length > 1 && (
                 <div className="product-thumbs">

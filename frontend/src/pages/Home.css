@@ -40,7 +40,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: stretch;
   position: relative;
   z-index: 1;
 }
@@ -137,10 +137,18 @@
 
 .hero-image {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
 }
 
 .hero-image img {
   width: 100%;
+  max-width: 520px;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   border: 4px solid rgba(255, 255, 255, 0.2);
@@ -399,6 +407,12 @@
 
   .products-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .hero .container {
+    grid-template-columns: 1.05fr 0.95fr;
   }
 }
 

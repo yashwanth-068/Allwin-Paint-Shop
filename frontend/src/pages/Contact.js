@@ -59,26 +59,27 @@ const Contact = () => {
     <div className="contact-page">
       <div className="container">
         <div className="contact-header">
-          <h1>Contact Us</h1>
-          <p>Reach out by email, call us directly, or register a complaint.</p>
+          <h1>Contact All Win Paint Shop</h1>
+          <p>Get quick quotes, product availability, and delivery support from our Karur team.</p>
         </div>
 
         <div className="contact-grid">
           <div className="contact-card">
             <div className="contact-card-header">
               <FiPhone size={24} />
-              <h3>Call Us</h3>
+              <h3>Call or WhatsApp</h3>
             </div>
-            <p>Speak to our team for quick support.</p>
-            <a className="btn btn-primary" href="tel:+919876543210">Call +91 98765 43210</a>
+            <p>Talk to us for pricing, stock confirmation, and delivery options.</p>
+            <div className="contact-pill">+91 94433 90015</div>
+            <a className="btn btn-primary" href="tel:+919443390015">Call Now</a>
           </div>
 
           <div className="contact-card">
             <div className="contact-card-header">
               <FiMail size={24} />
-              <h3>Email Us</h3>
+              <h3>Email & Enquiry</h3>
             </div>
-            <p>Send a message or register a complaint.</p>
+            <p>Send your requirements and we will respond quickly.</p>
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
@@ -124,16 +125,39 @@ const Contact = () => {
               <button className="btn btn-primary" type="submit" disabled={submitting}>
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
+              <p className="contact-note">
+                Messages are sent to <strong>allwinpaintshop@gmail.com</strong>. We reply within 1 business day.
+              </p>
             </form>
+          </div>
+
+          <div className="contact-card">
+            <div className="contact-card-header">
+              <FiMessageSquare size={24} />
+              <h3>Visit Our Store</h3>
+            </div>
+            <p>
+              34/1, Trichy Main Road, Thozhilpettai,<br />
+              S. Vellalapatti, Karur - 639004
+            </p>
+            <div className="contact-meta">
+              <span>Mon - Sat: 9:00 AM - 8:00 PM</span>
+              <span>Sunday: 10:00 AM - 2:00 PM</span>
+            </div>
           </div>
 
           <div className="contact-card contact-card-highlight">
             <div className="contact-card-header">
               <FiMessageSquare size={24} />
-              <h3>Register Complaint</h3>
+              <h3>Register a Complaint</h3>
             </div>
-            <p>Complaints are logged and tracked by our team.</p>
-            <p className="contact-note">Use the email form and select “Register Complaint”.</p>
+            <p>Complaints are logged and tracked by our support team.</p>
+            <ul className="contact-list">
+              <li>Choose "Register Complaint" in the form</li>
+              <li>Include bill number (if available)</li>
+              <li>We will call back within 24 hours</li>
+            </ul>
+            <p className="contact-note">Need urgent help? Please call us directly.</p>
           </div>
         </div>
       </div>

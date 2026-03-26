@@ -20,7 +20,7 @@
 .contact-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .contact-card {
@@ -65,6 +65,34 @@
   gap: 1rem;
 }
 
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(36, 80, 255, 0.1);
+  color: var(--primary);
+  font-weight: 600;
+  width: fit-content;
+}
+
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--gray-500);
+}
+
+.contact-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.4rem;
+  color: var(--gray-600);
+}
+
 .form-row {
   display: grid;
   gap: 1rem;
@@ -82,6 +110,11 @@
 
 :root[data-theme="dark"] .contact-header p,
 :root[data-theme="dark"] .contact-note {
+  color: var(--gray-700);
+}
+
+:root[data-theme="dark"] .contact-meta,
+:root[data-theme="dark"] .contact-list {
   color: var(--gray-700);
 }
 

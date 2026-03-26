@@ -17,7 +17,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="footer-desc">
-              Your trusted partner for quality building materials since 2010. 
+              Your trusted partner for quality building materials since 1999. 
               We provide the best paints, cement, steel bars, and hardware 
               at competitive prices in Karur and surrounding areas.
             </p>
@@ -52,15 +52,19 @@ const Footer = () => {
             <ul className="footer-contact">
               <li>
                 <FiMapPin className="footer-icon" />
-                <span>123 Main Road, Near Bus Stand,<br />Karur - 639001, Tamil Nadu</span>
+                <span>
+                  34/1, Trichy Main Road,<br />
+                  Thozhilpettai, S. Vellalapatti,<br />
+                  Karur - 639004
+                </span>
               </li>
               <li>
                 <FiPhone className="footer-icon" />
-                <span>+91 98765 43210<br />+91 04324 252525</span>
+                <span>+91 94433 90015</span>
               </li>
               <li>
                 <FiMail className="footer-icon" />
-                <span>info@allwinpaintshop.com</span>
+                <span>allwinpaintshop@gmail.com</span>
               </li>
               <li>
                 <FiClock className="footer-icon" />

@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   FiHome, FiPackage, FiShoppingBag, FiUsers, FiDollarSign, 
   FiBarChart2, FiSettings, FiLogOut, FiFileText, FiBox
 } from 'react-icons/fi';
+import { FiMoon, FiSun } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = ({ role }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [theme, setTheme] = useState(() => {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const handleLogout = () => {
     logout();
@@ -34,7 +45,8 @@ const Sidebar = ({ role }) => {
     { path: '/manager/orders', icon: FiShoppingBag, label: 'Orders' },
     { path: '/manager/sales', icon: FiDollarSign, label: 'Sales' },
     { path: '/manager/products', icon: FiPackage, label: 'Products' },
-    { path: '/manager/inventory', icon: FiBox, label: 'Inventory' }
+    { path: '/manager/inventory', icon: FiBox, label: 'Inventory' },
+    { path: '/manager/settings', icon: FiSettings, label: 'Settings' }
   ];
 
   const links = role === 'owner' ? ownerLinks : managerLinks;
@@ -64,6 +76,14 @@ const Sidebar = ({ role }) => {
       </nav>
 
       <div className="sidebar-footer">
+        <button
+          className="sidebar-theme-toggle"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
+          <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+        </button>
         <div className="sidebar-user">
           <div className="sidebar-avatar">
             {user?.name?.charAt(0).toUpperCase()}

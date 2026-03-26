@@ -170,6 +170,9 @@ export const ProductsModulePage = () => {
   const [paintProductId, setPaintProductId] = useState('');
   const [paintHex, setPaintHex] = useState('#ff7a18');
   const [savingPaint, setSavingPaint] = useState(false);
+  const [offerProductId, setOfferProductId] = useState('');
+  const [offerDiscount, setOfferDiscount] = useState('');
+  const [savingOffer, setSavingOffer] = useState(false);
   const [creating, setCreating] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
   const [imageUpdateId, setImageUpdateId] = useState('');
@@ -245,6 +248,11 @@ export const ProductsModulePage = () => {
     [products, imageUpdateId]
   );
 
+  const selectedOfferProduct = useMemo(
+    () => products.find((product) => product._id === offerProductId),
+    [products, offerProductId]
+  );
+
   useEffect(() => {
     if (paintProducts.length && !paintProductId) {
       setPaintProductId(paintProducts[0]._id);
@@ -256,6 +264,19 @@ export const ProductsModulePage = () => {
       setImageUpdateId(products[0]._id);
     }
   }, [products, imageUpdateId]);
+
+  useEffect(() => {
+    if (products.length && !offerProductId) {
+      setOfferProductId(products[0]._id);
+    }
+  }, [products, offerProductId]);
+
+  useEffect(() => {
+    if (!selectedOfferProduct) {
+      return;
+    }
+    setOfferDiscount(selectedOfferProduct.discount ?? 0);
+  }, [selectedOfferProduct]);
 
   useEffect(() => {
     if (!selectedImageProduct) {
@@ -461,6 +482,32 @@ export const ProductsModulePage = () => {
       toast.error(getErrorMessage(error, 'Failed to delete product'));
     } finally {
       setDeletingProduct(false);
+    }
+  };
+
+  const handleApplyOffer = async (event) => {
+    event.preventDefault();
+    if (!offerProductId) {
+      toast.error('Select a product to apply offer');
+      return;
+    }
+
+    const discountValue = Number(offerDiscount);
+    if (Number.isNaN(discountValue) || discountValue < 0 || discountValue > 100) {
+      toast.error('Discount must be between 0 and 100');
+      return;
+    }
+
+    setSavingOffer(true);
+    try {
+      const response = await api.put(`/products/${offerProductId}`, { discount: discountValue });
+      const updated = response.data.data;
+      setProducts((prev) => prev.map((product) => (product._id === updated._id ? updated : product)));
+      toast.success('Offer applied to product');
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to apply offer'));
+    } finally {
+      setSavingOffer(false);
     }
   };
 
@@ -719,6 +766,69 @@ export const ProductsModulePage = () => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="card product-offer-card">
+        <div className="card-header">
+          <h3>Apply Offer</h3>
+          <p className="module-muted">Set a discount percentage for any product in the catalog.</p>
+        </div>
+        <div className="card-body">
+          <form className="product-offer-form" onSubmit={handleApplyOffer}>
+            <div className="product-offer-grid">
+              <div className="form-group">
+                <label className="form-label">Product</label>
+                <select
+                  className="form-select"
+                  value={offerProductId}
+                  onChange={(event) => setOfferProductId(event.target.value)}
+                >
+                  {products.map((product) => (
+                    <option key={product._id} value={product._id}>
+                      {product.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Discount %</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  className="form-input"
+                  value={offerDiscount}
+                  onChange={(event) => setOfferDiscount(event.target.value)}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
+            <div className="product-offer-summary">
+              <div>
+                <span className="module-muted">Current price</span>
+                <strong>
+                  {selectedOfferProduct ? formatCurrency(selectedOfferProduct.price) : formatCurrency(0)}
+                </strong>
+              </div>
+              <div>
+                <span className="module-muted">Final price</span>
+                <strong>
+                  {selectedOfferProduct
+                    ? formatCurrency(
+                        selectedOfferProduct.price -
+                          (selectedOfferProduct.price * Number(offerDiscount || 0)) / 100
+                      )
+                    : formatCurrency(0)}
+                </strong>
+              </div>
+            </div>
+
+            <button className="btn btn-primary" type="submit" disabled={savingOffer}>
+              {savingOffer ? 'Applying...' : 'Apply Offer'}
+            </button>
+          </form>
         </div>
       </div>
 

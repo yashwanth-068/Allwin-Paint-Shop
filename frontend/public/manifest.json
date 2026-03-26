@@ -1,7 +1,13 @@
 {
   "short_name": "All Win",
   "name": "All Win Paint Shop",
-  "icons": [],
+  "icons": [
+    {
+      "src": "images/awp-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1e40af",

@@ -40,7 +40,9 @@ const Navbar = () => {
       <div className="container">
         <div className="navbar-content">
           <Link to="/" className="navbar-brand">
-            <div className="navbar-logo">AWP</div>
+            <div className="navbar-logo">
+              <img src="/images/awp-logo.svg" alt="AWP logo" />
+            </div>
             <div className="navbar-brand-text">
               <span className="navbar-title">All Win Paint Shop</span>
               <span className="navbar-subtitle">Karur, Tamil Nadu</span>

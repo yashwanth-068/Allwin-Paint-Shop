@@ -258,16 +258,6 @@ const Register = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <label className="checkbox-label">
-                <input type="checkbox" required />
-                <span>
-                  I agree to the <Link to="/terms">Terms & Conditions</Link> and{' '}
-                  <Link to="/privacy">Privacy Policy</Link>
-                </span>
-              </label>
-            </div>
-
             <button 
               type="submit" 
               className="btn btn-primary btn-lg w-full"
@@ -282,6 +272,10 @@ const Register = () => {
               Already have an account?{' '}
               <Link to="/login" className="auth-link">Sign in</Link>
             </p>
+          </div>
+
+          <div className="auth-note">
+            Owner/Manager accounts are created by the shop admin. Contact us to request access.
           </div>
         </div>
 

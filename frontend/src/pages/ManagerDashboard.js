@@ -9,7 +9,8 @@ import {
   InventoryModulePage,
   OrdersModulePage,
   ProductsModulePage,
-  SalesModulePage
+  SalesModulePage,
+  SettingsModulePage
 } from './ModulePages';
 import './Dashboard.css';
 
@@ -245,14 +246,15 @@ const ManagerDashboard = () => {
     <div className="dashboard-layout">
       <Sidebar role="manager" />
       <main className="dashboard-main">
-        <Routes>
-          <Route index element={<ManagerDashboardHome />} />
-          <Route path="billing/*" element={<BillingModulePage />} />
-          <Route path="orders/*" element={<OrdersModulePage />} />
-          <Route path="sales/*" element={<SalesModulePage />} />
-          <Route path="products/*" element={<ProductsModulePage />} />
-          <Route path="inventory/*" element={<InventoryModulePage />} />
-        </Routes>
+      <Routes>
+        <Route index element={<ManagerDashboardHome />} />
+        <Route path="billing/*" element={<BillingModulePage />} />
+        <Route path="orders/*" element={<OrdersModulePage />} />
+        <Route path="sales/*" element={<SalesModulePage />} />
+        <Route path="products/*" element={<ProductsModulePage />} />
+        <Route path="inventory/*" element={<InventoryModulePage />} />
+        <Route path="settings/*" element={<SettingsModulePage />} />
+      </Routes>
       </main>
     </div>
   );

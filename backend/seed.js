@@ -52,7 +52,15 @@ const IMAGE_URLS = {
   cement_ramco: '/images/products/ramco-supergrade.webp',
   cement_ramco_53: '/images/products/ramco-53-grade.webp',
   steel: '/images/products/steel.webp',
-  wire: '/images/products/gi-binding-wire.webp'
+  wire: '/images/products/gi-binding-wire.webp',
+  tool_shovel: '/images/products/shovel.jpg',
+  tool_tile_setter: '/images/products/Marshalltown-57-7-x-4-38-Tile-Setters.webp',
+  brush_1_in: '/images/products/paint-brush-1 inch.webp',
+  brush_1_5_in: '/images/products/paint brush 1.5 inch.jpg',
+  brush_2_in: '/images/products/bruch 2 inch.webp',
+  brush_2_5_in: '/images/products/brush 2.5 inch.jpg',
+  roller_9_in: '/images/products/paint-roller-500x500.webp',
+  roller_tray: '/images/products/tray for roller.webp'
 };
 
 const CATEGORY_IMAGES = {
@@ -111,8 +119,11 @@ const PRODUCT_IMAGES = {
   'Bosch Angle Grinder 710W': IMAGE_URLS.steel,
   'Stanley Measuring Tape 5m': IMAGE_URLS.steel,
   'Paint Roller Set 9 inch': IMAGE_URLS.paint_generic,
+  'Paint Roller 9 inch': IMAGE_URLS.roller_9_in,
   'Taparia Screwdriver Set 6 pcs': IMAGE_URLS.steel,
   'Spirit Level 24 inch': IMAGE_URLS.steel,
+  'Marshalltown Tile Setter Trowel 4-3/8 inch': IMAGE_URLS.tool_tile_setter,
+  'Steel Shovel': IMAGE_URLS.tool_shovel,
   // Hardware
   'GI Binding Wire 20 Gauge': IMAGE_URLS.wire,
   'Binding Wire 22 Gauge (20 kg)': IMAGE_URLS.wire,
@@ -131,6 +142,12 @@ const PRODUCT_IMAGES = {
   'Painter Masking Tape 2 inch': IMAGE_URLS.paint_generic,
   'Sandpaper 100 Grit (Pack of 5)': IMAGE_URLS.paint_generic,
   'Paint Brush 4 inch': IMAGE_URLS.paint_generic,
+  'Paint Brush 1 inch': IMAGE_URLS.brush_1_in,
+  'Paint Brush 1.5 inch': IMAGE_URLS.brush_1_5_in,
+  'Paint Brush 2 inch': IMAGE_URLS.brush_2_in,
+  'Paint Brush 2.5 inch': IMAGE_URLS.brush_2_5_in,
+  'Paint Tray for Roller': IMAGE_URLS.roller_tray,
+  'Tile Setter Trowel (4x4)': IMAGE_URLS.tool_tile_setter,
   'Putty Knife 6 inch': IMAGE_URLS.steel,
   'Dr. Fixit Roofseal 1L': IMAGE_URLS.paint_generic
 };
@@ -189,9 +206,11 @@ const sampleProducts = (ownerId) => [
   { name: 'Black+Decker Heat Gun 1800W', description: 'Versatile heat gun for shrink wrap and paint removal.', category: 'tools', subCategory: 'Power Tools', brand: 'Black+Decker', price: 2900, unit: 'piece', stock: 18, minStock: 4, gst: 18, discount: 4, isActive: true, createdBy: ownerId },
   { name: 'Bosch Angle Grinder 710W', description: 'Compact angle grinder for cutting and polishing.', category: 'tools', subCategory: 'Power Tools', brand: 'Bosch', price: 2600, unit: 'piece', stock: 20, minStock: 4, gst: 18, discount: 3, isActive: true, createdBy: ownerId },
   { name: 'Stanley Measuring Tape 5m', description: 'Durable measuring tape for site measurements.', category: 'tools', subCategory: 'Hand Tools', brand: 'Stanley', price: 250, unit: 'piece', stock: 80, minStock: 15, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
-  { name: 'Paint Roller Set 9 inch', description: 'Roller set for smooth wall finish and fast coverage.', category: 'tools', subCategory: 'Painting Tools', brand: 'Generic', price: 180, unit: 'piece', stock: 120, minStock: 20, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Roller 9 inch', description: '9 inch roller for smooth wall finish and fast coverage.', category: 'tools', subCategory: 'Painting Tools', brand: 'Generic', price: 286, unit: 'piece', stock: 120, minStock: 20, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Taparia Screwdriver Set 6 pcs', description: 'Mixed head screwdriver set for electrical work.', category: 'tools', subCategory: 'Hand Tools', brand: 'Taparia', price: 420, unit: 'piece', stock: 60, minStock: 12, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Spirit Level 24 inch', description: 'Aluminium spirit level for precision alignment.', category: 'tools', subCategory: 'Hand Tools', brand: 'Generic', price: 380, unit: 'piece', stock: 45, minStock: 8, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Tile Setter Trowel (4x4)', description: 'Tile setter trowel for spreading adhesive and leveling tiles.', category: 'tools', subCategory: 'Tiling Tools', brand: 'Generic', price: 270, unit: 'piece', stock: 35, minStock: 6, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Steel Shovel', description: 'Heavy-duty steel shovel for construction and digging work.', category: 'tools', subCategory: 'Hand Tools', brand: 'Generic', price: 712, unit: 'piece', stock: 30, minStock: 6, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   // Additional Hardware
   { name: 'Construction Nails 2 inch (Box)', description: 'High quality nails for concrete and wood work.', category: 'hardware', subCategory: 'Fasteners', brand: 'Local', price: 350, unit: 'bundle', stock: 120, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'CPVC Pipe 1 inch (10 ft)', description: 'Heat resistant CPVC plumbing pipe for interiors.', category: 'hardware', subCategory: 'Plumbing', brand: 'Astral', price: 220, unit: 'piece', stock: 160, minStock: 30, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
@@ -207,6 +226,11 @@ const sampleProducts = (ownerId) => [
   { name: 'Painter Masking Tape 2 inch', description: 'Masking tape for clean paint edges and protection.', category: 'accessories', subCategory: 'Painting', brand: 'Generic', price: 65, unit: 'piece', stock: 180, minStock: 30, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Sandpaper 100 Grit (Pack of 5)', description: 'Sanding sheets for surface preparation.', category: 'accessories', subCategory: 'Painting', brand: 'Generic', price: 70, unit: 'piece', stock: 150, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Paint Brush 4 inch', description: 'Wide brush for fast coverage on walls and ceilings.', category: 'accessories', subCategory: 'Painting', brand: 'Generic', price: 120, unit: 'piece', stock: 130, minStock: 20, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Brush 1 inch', description: 'Small brush for trims and detailed paint work.', category: 'accessories', subCategory: 'Painting', brand: 'Total', price: 40, unit: 'piece', stock: 150, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Brush 1.5 inch', description: 'Mid-size brush for corners and touch-ups.', category: 'accessories', subCategory: 'Painting', brand: 'Ingco', price: 49, unit: 'piece', stock: 140, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Brush 2 inch', description: 'General purpose brush for walls and woodwork.', category: 'accessories', subCategory: 'Painting', brand: 'Ingco', price: 89, unit: 'piece', stock: 140, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Brush 2.5 inch', description: 'Larger brush for quick coverage and smooth finish.', category: 'accessories', subCategory: 'Painting', brand: 'Ingco', price: 87, unit: 'piece', stock: 120, minStock: 20, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
+  { name: 'Paint Tray for Roller', description: 'Paint tray for 9 inch rollers with easy clean finish.', category: 'accessories', subCategory: 'Painting', brand: 'Generic', price: 81, unit: 'piece', stock: 140, minStock: 25, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Putty Knife 6 inch', description: 'Stainless steel putty knife for smooth plastering.', category: 'accessories', subCategory: 'Painting', brand: 'Generic', price: 110, unit: 'piece', stock: 100, minStock: 15, gst: 18, discount: 0, isActive: true, createdBy: ownerId },
   { name: 'Dr. Fixit Roofseal 1L', description: 'Waterproofing solution for terraces and roofs.', category: 'accessories', subCategory: 'Waterproofing', brand: 'Dr. Fixit', price: 310, unit: 'liter', stock: 90, minStock: 12, gst: 18, discount: 0, isActive: true, createdBy: ownerId }
 ].map((product) => ({

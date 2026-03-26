@@ -162,6 +162,13 @@
   text-decoration: underline;
 }
 
+.auth-note {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  text-align: center;
+}
+
 .auth-demo {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -174,6 +181,18 @@
   font-size: 0.75rem;
   color: var(--gray-500);
   margin-bottom: 0.75rem;
+}
+
+.auth-demo-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.auth-demo-select {
+  min-width: 160px;
 }
 
 .auth-demo-accounts {
@@ -195,6 +214,12 @@
 .auth-demo-btn:hover {
   border-color: var(--primary);
   color: var(--primary);
+}
+
+.auth-demo-note {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--gray-500);
 }
 
 .auth-banner {
@@ -224,7 +249,12 @@
 :root[data-theme="dark"] .auth-subtitle,
 :root[data-theme="dark"] .auth-footer p,
 :root[data-theme="dark"] .checkbox-label,
-:root[data-theme="dark"] .auth-demo-title {
+:root[data-theme="dark"] .auth-demo-title,
+:root[data-theme="dark"] .auth-demo-note {
+  color: var(--gray-700);
+}
+
+:root[data-theme="dark"] .auth-note {
   color: var(--gray-700);
 }
 
@@ -322,6 +352,16 @@
 
 :root[data-theme="dark"] .form-divider span {
   color: var(--gray-700);
+}
+
+:root[data-theme="dark"] .auth-page .form-input:-webkit-autofill,
+:root[data-theme="dark"] .auth-page .form-input:-webkit-autofill:hover,
+:root[data-theme="dark"] .auth-page .form-input:-webkit-autofill:focus,
+:root[data-theme="dark"] .auth-page .form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #0f172a inset;
+  -webkit-text-fill-color: var(--gray-900);
+  caret-color: var(--gray-900);
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 @media (max-width: 768px) {

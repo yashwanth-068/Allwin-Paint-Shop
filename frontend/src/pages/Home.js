@@ -8,6 +8,13 @@ import './Home.css';
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const heroImages = [
+    '/images/products/a man painting.jpg',
+    '/images/products/paint-roller-500x500.webp'
+  ];
+  const [heroImage] = useState(
+    () => heroImages[Math.floor(Math.random() * heroImages.length)]
+  );
 
   useEffect(() => {
     fetchProducts();
@@ -28,7 +35,7 @@ const Home = () => {
     { 
       name: 'Paints & Colors', 
       slug: 'paints',
-      image: '/images/products/asian-apex-ultima.webp',
+      image: '/images/products/asian paint royal matt.jpg',
       description: 'Premium quality paints for interior & exterior'
     },
     { 
@@ -46,7 +53,7 @@ const Home = () => {
     { 
       name: 'Tools & Hardware', 
       slug: 'tools',
-      image: '/images/products/steel.webp',
+      image: '/images/products/taparia wrench.jpg',
       description: 'Professional tools and equipment'
     }
   ];
@@ -90,8 +97,8 @@ const Home = () => {
             </div>
             <div className="hero-stats">
               <div className="hero-stat">
-                <span className="hero-stat-value">27+</span>
-                <span className="hero-stat-label">Years Experience</span>
+                <span className="hero-stat-value">1999</span>
+                <span className="hero-stat-label">Established</span>
               </div>
               <div className="hero-stat">
                 <span className="hero-stat-value">10K+</span>
@@ -105,7 +112,7 @@ const Home = () => {
           </div>
           <div className="hero-image">
             <img 
-              src="/images/products/cement.webp" 
+              src={heroImage}
               alt="Construction Materials"
             />
           </div>
